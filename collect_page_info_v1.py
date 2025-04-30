@@ -6,13 +6,14 @@ from neo4j import GraphDatabase
 import hashlib
 
 # 连接Neo4j
-driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "your_password"))
+driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "26431043"))
 
 # 采集控件信息并存入Neo4j
 def collect_controls(url):
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=False)
         page = browser.new_page()
+        inject_xpath_script(page)
         page.goto(url)
 
         # 抓取所有可交互控件，比如按钮、输入框
@@ -106,6 +107,6 @@ def inject_xpath_script(page):
 
 # 主程序
 if __name__ == "__main__":
-    url = "https://example.com/login"
+    url = "https://www.baidu.com/"
     collect_controls(url)
     print("采集完成✅")
